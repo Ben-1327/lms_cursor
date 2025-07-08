@@ -12,7 +12,7 @@ export class CurriculaService {
 
   async create(createCurriculumDto: any): Promise<Curriculum> {
     const curriculum = this.curriculumRepository.create(createCurriculumDto);
-    return this.curriculumRepository.save(curriculum);
+    return await this.curriculumRepository.save(curriculum) as unknown as Curriculum;
   }
 
   async findAll(): Promise<Curriculum[]> {

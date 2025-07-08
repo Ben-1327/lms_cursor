@@ -12,7 +12,7 @@ export class CoursesService {
 
   async create(createCourseDto: any): Promise<Course> {
     const course = this.courseRepository.create(createCourseDto);
-    return this.courseRepository.save(course);
+    return await this.courseRepository.save(course) as unknown as Course;
   }
 
   async findAll(): Promise<Course[]> {

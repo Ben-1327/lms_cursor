@@ -12,7 +12,7 @@ export class AssignmentsService {
 
   async create(createAssignmentDto: any): Promise<Assignment> {
     const assignment = this.assignmentRepository.create(createAssignmentDto);
-    return this.assignmentRepository.save(assignment);
+    return await this.assignmentRepository.save(assignment) as unknown as Assignment;
   }
 
   async findAll(): Promise<Assignment[]> {

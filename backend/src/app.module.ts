@@ -9,7 +9,12 @@ import { CoursesModule } from './modules/courses/courses.module';
 import { CurriculaModule } from './modules/curricula/curricula.module';
 import { AssignmentsModule } from './modules/assignments/assignments.module';
 import { NotificationsModule } from './modules/notifications/notifications.module';
-import * as entities from './database/entities';
+import { User } from './database/entities/user.entity';
+import { Course } from './database/entities/course.entity';
+import { Curriculum } from './database/entities/curriculum.entity';
+import { Enrollment } from './database/entities/enrollment.entity';
+import { Assignment } from './database/entities/assignment.entity';
+import { Submission } from './database/entities/submission.entity';
 
 @Module({
   imports: [
@@ -20,14 +25,14 @@ import * as entities from './database/entities';
       inject: [ConfigService],
       useFactory: (configService: ConfigService) => ({
         type: 'postgres',
-        host: configService.get('DATABASE_HOST') || 'localhost',
-        port: parseInt(configService.get('DATABASE_PORT')) || 5432,
-        username: configService.get('DATABASE_USER') || 'lms_user',
-        password: configService.get('DATABASE_PASSWORD') || 'lms_password',
-        database: configService.get('DATABASE_NAME') || 'lms_db',
-        entities: Object.values(entities),
-        synchronize: configService.get('NODE_ENV') === 'development',
-        logging: configService.get('NODE_ENV') === 'development',
+        host: configService.get<string>('DATABASE_HOST') || 'localhost',
+        port: parseInt(configService.get<string>('DATABASE_PORT') || '5432'),
+        username: configService.get<string>('DATABASE_USER') || 'lms_user',
+        password: configService.get<string>('DATABASE_PASSWORD') || 'lms_password',
+        database: configService.get<string>('DATABASE_NAME') || 'lms_db',
+        entities: [User, Course, Curriculum, Enrollment, Assignment, Submission],
+        synchronize: configService.get<string>('NODE_ENV') === 'development',
+        logging: configService.get<string>('NODE_ENV') === 'development',
       }),
     }),
     AuthModule,
