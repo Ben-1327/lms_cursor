@@ -1,5 +1,3 @@
-import Image from "next/image";
-
 export default function Home() {
   return (
     <div className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100">
@@ -99,6 +97,10 @@ export default function Home() {
               <div className="flex items-center">
                 <span className="text-green-500 mr-2">✅</span>
                 <span>Swagger API ドキュメント設定完了</span>
+              </div>
+              <div className="flex items-center">
+                <span className="text-orange-500 mr-2">🔧</span>
+                <span>TypeScript ビルドエラー修正完了</span>
               </div>
             </div>
           </div>
