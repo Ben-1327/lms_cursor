@@ -1,26 +1,23 @@
 import { NestFactory } from '@nestjs/core';
 import { SwaggerModule, DocumentBuilder } from '@nestjs/swagger';
-import { ValidationPipe } from '@nestjs/common';
 import { AppModule } from './app.module';
+import { randomUUID } from 'crypto';
+
+// crypto.randomUUIDをglobalに設定
+(globalThis as any).crypto = {
+  randomUUID: randomUUID
+};
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
-
+  
   // CORS設定
   app.enableCors({
-    origin: ['http://localhost:3000', 'http://localhost:3001'],
-    methods: 'GET,HEAD,PUT,PATCH,POST,DELETE,OPTIONS',
+    origin: process.env.FRONTEND_URL || 'http://localhost:3000',
     credentials: true,
   });
 
-  // グローバルバリデーションパイプ
-  app.useGlobalPipes(new ValidationPipe({
-    whitelist: true,
-    forbidNonWhitelisted: true,
-    transform: true,
-  }));
-
-  // APIプレフィックス設定
+  // APIプレフィックスを設定
   app.setGlobalPrefix('api');
 
   // Swagger設定
@@ -30,14 +27,14 @@ async function bootstrap() {
     .setVersion('1.0')
     .addBearerAuth()
     .build();
-  
+    
   const document = SwaggerModule.createDocument(app, config);
   SwaggerModule.setup('api/docs', app, document);
 
   const port = process.env.PORT || 3001;
   await app.listen(port);
   
-  console.log(`🚀 アプリケーションが起動しました: http://localhost:${port}`);
-  console.log(`📚 API ドキュメント: http://localhost:${port}/api/docs`);
+  console.log(`🚀 Application is running on: http://localhost:${port}`);
+  console.log(`📚 API Documentation: http://localhost:${port}/api/docs`);
 }
 bootstrap();

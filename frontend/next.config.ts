@@ -1,18 +1,10 @@
-import type { NextConfig } from "next";
-
-const nextConfig: NextConfig = {
+/** @type {import('next').NextConfig} */
+const nextConfig = {
   output: 'standalone',
   experimental: {
-    serverActions: {
-      allowedOrigins: ["localhost:3000", "localhost:3001"]
-    }
+    outputFileTracingRoot: '/app',
   },
-  images: {
-    domains: ['localhost'],
-  },
-  env: {
-    NEXT_PUBLIC_API_URL: process.env.NEXT_PUBLIC_API_URL || 'http://localhost:3001/api',
-  }
+  distDir: '.next',
 };
 
 export default nextConfig;
